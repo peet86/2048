@@ -5,6 +5,14 @@ import {
 	arrayToMatrix,
 } from './utils'
 
+export {
+	DIRECTION_LEFT,
+	DIRECTION_UP,
+	DIRECTION_RIGHT,
+	DIRECTION_DOWN
+}
+from './constants'
+
 const Game2048 = (size, renderCb) => {
 	let matrix = createEmptyMatrix(size)
 	let status = 'playing'
@@ -22,7 +30,7 @@ const Game2048 = (size, renderCb) => {
 	const moveMachine = () => {
 		// get all the zero items
 		const flatMatrix = matrix.flat()
-		const zeros = zeroIndexes(flatMatrix) 
+		const zeros = zeroIndexes(flatMatrix)
 
 		// check lost? 
 
