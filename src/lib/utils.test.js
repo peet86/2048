@@ -6,6 +6,7 @@ import {
 
 import {
 	createEmptyMatrix,
+	zeroIndexes
 } from './utils'
 
 describe('utils', () => {
@@ -27,6 +28,20 @@ describe('utils', () => {
 				[0, 0, 0, 0],
 				[0, 0, 0, 0]
 			])
+		})
+	})
+
+	describe('zeroIndexes', () => {
+
+		test('should return with zero items from an array', () => {
+			expect(zeroIndexes([1, 0, 2])).toStrictEqual([1])
+		})
+
+		test('should return with empty array when no zeros found', () => {
+			expect(zeroIndexes([1, 2, 3])).toStrictEqual([])
+		})
+		test('should return with empty array when no zeros found', () => {
+			expect(zeroIndexes([1, 2, 3])).toStrictEqual([])
 		})
 	})
 

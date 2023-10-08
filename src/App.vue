@@ -20,7 +20,7 @@ const onBoardChange = ({ matrix, status }) => {
 }
 
 const onMove = (direction) => {
-  game.moveTiles(direction)
+  game.moveUser(direction)
 }
 
 onMounted(() => {

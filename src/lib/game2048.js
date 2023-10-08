@@ -1,10 +1,12 @@
 import sampleSize from 'lodash/sampleSize'
 import {
 	createEmptyMatrix,
+	zeroIndexes,
+	arrayToMatrix,
 } from './utils'
 
-const Game2048 = (boardSize, renderCb) => {
-	let matrix = createEmptyMatrix(boardSize)
+const Game2048 = (size, renderCb) => {
+	let matrix = createEmptyMatrix(size)
 	let status = 'playing'
 
 	// call external rendering
@@ -16,11 +18,20 @@ const Game2048 = (boardSize, renderCb) => {
 	}
 
 
-	// machine can add 2s
+	// machine can add 2 or 4
 	const moveMachine = () => {
-		// check if any zero cells left
+		// get all the zero items
+		const flatMatrix = matrix.flat()
+		const zeros = zeroIndexes(flatMatrix) 
 
-		// add 2s to zero cells
+		// check lost? 
+
+		// select two random zero indexes and update the values in the matrix with 
+		sampleSize(zeros, 2).map((move) => {
+			flatMatrix[move] = 2
+		})
+
+		matrix = arrayToMatrix(flatMatrix, size)
 
 		render()
 		// next: wait for user 
