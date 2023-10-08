@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // keybo. code - direction
 const keyMap = {
@@ -27,9 +27,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <pre class="">
-    {{ matrix }}
-  </pre>
+  <div class="" v-for="col in matrix">
+    {{ col }}
+  </div>
 </template>
 
 <style scoped></style>
