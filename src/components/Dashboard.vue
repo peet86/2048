@@ -1,11 +1,13 @@
 <script setup>
-import { ref } from 'vue'
+import { defineProps, ref } from 'vue'
 
-const boardSize = ref(4)
-
-defineProps({
+const props = defineProps({
   isPlaying: Boolean,
+	defaultSize: Number
 })
+
+const boardSize = ref(props.defaultSize)
+
 </script>
 
 <template>
