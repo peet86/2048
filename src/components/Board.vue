@@ -28,8 +28,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="" v-for="col in matrix">
-    {{ col }}
+  <div class="matrix">
+    <div class="col" v-for="col in matrix">
+      <div class="cell" style="width:20px; height: 20px; display: inline-block; border: 1px solid #ccc;" v-for="cel in col">
+        {{ cel ? cel : '' }}
+      </div>
+    </div>
   </div>
 </template>
 

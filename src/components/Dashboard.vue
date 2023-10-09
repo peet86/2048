@@ -11,7 +11,7 @@ const boardSize = ref(props.defaultSize)
 
 <template>
   <div class="">
-		<input v-model="boardSize" type="number" min="4" max="12" step="2"/>
+		<input v-model="boardSize" type="number" min="2" max="12" step="2"/>
 		<button type="button" @click="$emit('start', boardSize)">New {{ boardSize }} x {{ boardSize }} game </button>
   </div>
 </template>
