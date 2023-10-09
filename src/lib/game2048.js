@@ -1,12 +1,11 @@
-import sampleSize from 'lodash'
-
 import {
 	createEmptyMatrix,
 	zeroIndexes,
 	arrayToMatrix,
 	rotateMatrixCW,
 	rotateMatrixCCW,
-	randomArrayItems
+	randomArrayItems,
+	flipMatrixCols
 } from './utils'
 
 import {
@@ -16,8 +15,6 @@ import {
 	DIRECTION_DOWN
 }
 from './constants'
-
-
 
 const Game2048 = (size, renderCb) => {
 	let matrix = createEmptyMatrix(size)
@@ -54,9 +51,9 @@ const Game2048 = (size, renderCb) => {
 	// rotate matrix according to the direction and summarize columns
 	const moveUser = (direction) => {
 		const rotatedMatrix = rotateMatrix(matrix, direction)
-		console.log(direction, rotatedMatrix)
-		rotatedMatrix.map((row) => mergeItems(row))
+		rotatedMatrix.map((col) => mergeItems(col))
 		matrix = rotateMatrix(rotatedMatrix, direction, true)
+		console.log(direction, rotatedMatrix)
 
 		// todo check won
 
@@ -64,7 +61,7 @@ const Game2048 = (size, renderCb) => {
 		render()
 
 		// next move:
-		//moveMachine()
+		moveMachine()
 	}
 
 	const isLost = () => {
@@ -86,26 +83,34 @@ const Game2048 = (size, renderCb) => {
 	}
 }
 
+
+// rotation and revers rotation makes easier and cheaper to merge items.. all 
 export const rotateMatrix = (matrix, direction, reverse = false) => {
-	if (direction === DIRECTION_RIGHT) return matrix
-	if (direction === DIRECTION_UP) return reverse ? rotateMatrixCCW(matrix) : rotateMatrixCW(matrix)
-	if (direction === DIRECTION_LEFT) return reverse ? rotateMatrixCW(matrix) : rotateMatrixCCW(matrix)
-	if (direction === DIRECTION_DOWN) return reverse ? rotateMatrixCCW(rotateMatrixCCW(matrix)) : rotateMatrixCW(rotateMatrixCW(matrix))
+	if (direction === DIRECTION_RIGHT) return flipMatrixCols(matrix)
+	if (direction === DIRECTION_UP) return reverse ? rotateMatrixCW(matrix) : rotateMatrixCCW(matrix)
+	if (direction === DIRECTION_LEFT) return matrix
+	if (direction === DIRECTION_DOWN) return reverse ? rotateMatrixCCW(matrix) : rotateMatrixCW(matrix)
 }
 
-export const mergeItems = (array) => array.map((item, index) => {
-	const nextIndex = index + 1
-	const nextItem = nextIndex < array.length ? array[nextIndex] : 0
-	if (item === 0) {
-		return nextItem
-	} else if (item === nextItem) {
-		// merged items become zeros
-		array[nextIndex] = 0
-		return item + nextItem
-	} else {
-		return item
+export const mergeItems = (array) => {
+	let index = 0;
+	for (let currentIndex = 1; currentIndex < array.length; currentIndex++) {
+
+		if (array[currentIndex] == 0) {
+			continue;
+		} else if (array[index] == 0) {
+			array[index] = array[currentIndex]; // merge
+			array[currentIndex] = 0; // merged items become zeros 
+		} else if (array[index] === array[currentIndex]) {
+			array[index] += array[currentIndex]; // merge
+			array[currentIndex] = 0; // merged become zeros 
+		} else if (index + 1 < currentIndex) {
+			currentIndex--; // move back
+		}
+		index += !!array[index];
 	}
-})
+	return array;
+}
 
 export * from './constants'; // re-export constants
 export default Game2048
