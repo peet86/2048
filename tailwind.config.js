@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['"Press Start 2P"', ...defaultTheme.fontFamily.sans],
+        'mono': ['"Press Start 2P"', ...defaultTheme.fontFamily.mono],
       },
     },
   },

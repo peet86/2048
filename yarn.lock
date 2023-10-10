@@ -1169,6 +1169,11 @@ vitest@^0.34.6:
     vite-node "0.34.6"
     why-is-node-running "^2.2.2"
 
+vue3-touch-events@^4.1.8:
+  version "4.1.8"
+  resolved "https://nexus.refurbed.io/repository/npm-proxy/vue3-touch-events/-/vue3-touch-events-4.1.8.tgz#0cc7389a9fc2ecc6b34095b27d7174d5d3edc300"
+  integrity sha512-8Zs0mj5k/7R579JHsc5w1V2IqAkNlz2gJs18bRV4T5WyCMfd5sBf2ESJ2xR8z+n7ypgK8fQO5MmDOPal0Evf3Q==
+
 vue@^3.3.4:
   version "3.3.4"
   resolved "https://nexus.refurbed.io/repository/npm-proxy/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
