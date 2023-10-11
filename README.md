@@ -9,7 +9,7 @@ You can play the deployed version of the game here: [Play Game2048](https://peet
 - Vite (build tool)
 - Vue.js 3 (ui)
 - Vanilla JS (game logic)
-- TailwindCSS (css fw.)
+- TailwindCSS + PostCSS (css fw.)
 - Vitest (unit tests)
 
 

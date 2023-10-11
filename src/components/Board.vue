@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { DIRECTION_DOWN, DIRECTION_UP, DIRECTION_LEFT, DIRECTION_RIGHT } from '../lib/game2048'
 
 const props = defineProps({
-  matrix: Array,
+  matrix: { type: Array, required: true },
 })
 
 const emit = defineEmits(['move'])
@@ -85,16 +85,34 @@ const getTextColor = (value) => {
 <template>
   <div
     class="mx-4 md:mx-auto md:max-w-[480px] p-4 bg-white border-yellow-900 rounded-2xl aspect-square transition ease-in-out duration-200"
-    :class="animation">
-    <slot></slot>
-    <div v-if="matrix" class="relative w-full">
-      <div class="absolute top-0 left-0 right-0 bottom-0 z-10" v-touch:swipe="onSwipe"></div>
-      <div class="flex" v-for="col in matrix">
-        <div class="border h-full shadow-inner grow m-1 aspect-square rounded-xl justify-center align-middle relative"
-          :class="getTextSize(value)" v-for="value in col">
-          <div :class="getTextColor(value)"
-            class="select-none font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ value || '&nbsp;'
-            }}</div>
+    :class="animation"
+  >
+    <slot />
+    <div
+      v-if="matrix"
+      class="relative w-full"
+    >
+      <div
+        v-touch:swipe="onSwipe"
+        class="absolute top-0 left-0 right-0 bottom-0 z-10"
+      />
+      <div
+        v-for="col in matrix"
+        :key="col[0]"
+        class="flex"
+      >
+        <div
+          v-for="(value, index) in col"
+          :key="index"
+          class="border h-full shadow-inner grow m-1 aspect-square rounded-xl justify-center align-middle relative"
+          :class="getTextSize(value)"
+        >
+          <div
+            :class="getTextColor(value)"
+            class="select-none font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
+            {{ value || '&nbsp;' }}
+          </div>
         </div>
       </div>
     </div>
