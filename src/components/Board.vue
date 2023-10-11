@@ -8,14 +8,13 @@ const props = defineProps({
 
 const emit = defineEmits(['move'])
 
-const ANIM_TTL = 300
+const ANIM_TTL = 200
 const animation = ref('')
 
 onMounted(() => {
   document.addEventListener('keyup', onKeyUp)
 })
 
-// keybo. code - direction
 const KEY_MAP = {
   37: DIRECTION_LEFT,
   38: DIRECTION_UP,
@@ -31,10 +30,10 @@ const SWIPE_MAP = {
 }
 
 const ANIM_MAP = {
-  [DIRECTION_LEFT]: '-translate-x-3',
-  [DIRECTION_RIGHT]: 'translate-x-3',
-  [DIRECTION_UP]: '-translate-y-3',
-  [DIRECTION_DOWN]: 'translate-y-3'
+  [DIRECTION_LEFT]: '-translate-x-2',
+  [DIRECTION_RIGHT]: 'translate-x-2',
+  [DIRECTION_UP]: '-translate-y-2',
+  [DIRECTION_DOWN]: 'translate-y-2'
 }
 
 const onKeyUp = (e) => {
@@ -56,7 +55,6 @@ const onSwipe = (d) => {
 }
 
 const animateBoard = (direction) => {
-  console.log(ANIM_MAP[direction])
   animation.value = ANIM_MAP[direction]
   setTimeout(() => {
     animation.value = ''
@@ -71,12 +69,13 @@ const getTextSize = (value) => {
 }
 
 const getTextColor = (value) => {
-  if (value <= 4) return "text-stone-400"
-  if (value < 8) return "text-yellow-200"
-  if (value < 16) return "text-yellow-400"
-  if (value < 64) return "text-orange-400"
-  if (value < 512) return "text-orange-600"
-  if (value < 1024) return "text-red-400"
+  if (value == 2) return "text-stone-400"
+  if (value == 4) return "text-yellow-400"
+  if (value < 8) return "text-yellow-600"
+  if (value < 16) return "text-orange-400"
+  if (value < 64) return "text-orange-600"
+  if (value < 512) return "text-red-400"
+  if (value < 1024) return "text-red-500"
   if (value < 2048) return "text-red-600"
   return "text-red-800"
 }
@@ -94,8 +93,8 @@ const getTextColor = (value) => {
         <div class="border h-full shadow-inner grow m-1 aspect-square rounded-xl justify-center align-middle relative"
           :class="getTextSize(value)" v-for="value in col">
           <div :class="getTextColor(value)"
-            class="select-none font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ value ? value :
-              '&nbsp;' }}</div>
+            class="select-none font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ value || '&nbsp;'
+            }}</div>
         </div>
       </div>
     </div>

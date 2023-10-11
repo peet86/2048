@@ -42,27 +42,24 @@ const Game2048 = (size, level, renderCb) => {
 
 		// state mutators 
 		set matrix(matrix) {
-			const flatMatrix = matrix.flat()
 			this.m = matrix
-			this.fm = flatMatrix
-			this.status = determineStatus(flatMatrix)
+			this.fm = matrix.flat()
 		},
 		set flatMatrix(flatMatrix) {
 			this.fm = flatMatrix
-			this.matrix = arrayToMatrix(flatMatrix, size)
-			this.status = determineStatus(flatMatrix)
+			this.m = arrayToMatrix(flatMatrix, size)
 		},
 		set status(status) {
 			this.s = status
 		},
 	}
 
-	const determineStatus = (flatMatrix) => {
+	const determineStatus = () => {
 		// any item = 2048?
-		if (flatMatrix.includes(2048)) return STATUS_WON
+		if (state.flatMatrix.includes(2048)) return STATUS_WON
 
-		// any zeros left for the machine to move or gridlock?
-		if (zeroIndexes(flatMatrix) <= 2) return STATUS_LOST
+		// less zeros left than the numbers the machine would add
+		if ((zeroIndexes(state.flatMatrix).length) < (level === LEVEL_PRO ? 2 : 1 )) return STATUS_LOST
 
 		// keep playing
 		return STATUS_PLAYING
@@ -92,6 +89,7 @@ const Game2048 = (size, level, renderCb) => {
 		})
 
 		state.flatMatrix = flatMatrix
+
 		render()
 		// next move: 
 		// wait for user 
@@ -106,6 +104,7 @@ const Game2048 = (size, level, renderCb) => {
 		const newMatrix = rotateMatrix(rotatedMatrix, direction, true) // rotate back
 
 		state.matrix = newMatrix
+		state.status = determineStatus()
 		render()
 
 		// next move:
@@ -124,7 +123,6 @@ const Game2048 = (size, level, renderCb) => {
 }
 
 
-// rotation and revers rotation makes easier and cheaper to merge items.. all 
 export const rotateMatrix = (matrix, direction, reverse = false) => {
 	if (direction === DIRECTION_RIGHT) return flipMatrixCols(matrix)
 	if (direction === DIRECTION_UP) return reverse ? rotateMatrixCW(matrix) : rotateMatrixCCW(matrix)

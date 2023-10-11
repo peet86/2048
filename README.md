@@ -1,7 +1,34 @@
-# Vue 3 + Vite
+# Game2048 by peet86
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Welcome to the Game2048 repository! This project is a recreation of the classic 2048 game, developed by peet86. 
 
-## Recommended IDE Setup
+You can play the deployed version of the game here: [Play Game2048](https://peet86.github.io/2048/)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Technology Stack
+
+- Vite (build tool)
+- Vue.js 3 (ui)
+- Vanilla JS (game logic)
+- TailwindCSS (css fw.)
+- Vitest (unit tests)
+
+
+## Project Structure
+
+- The game logic is encapsulated in a vanilla JavaScript module, making it independent and reusable.
+- The user interface is built using Vue.js 3, providing a responsive and interactive user experience on both Desktop and Mobile devices. 
+
+## Getting Started
+
+After cloning or downloading the repository, navigate to the project directory and run the following commands to install dependencies and start the development server:
+
+```bash
+yarn install
+yarn dev
+```
+
+## License
+
+This project is open source and available under the MIT License.
+Contact
+
