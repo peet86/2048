@@ -12,36 +12,83 @@ import {
 	DIRECTION_LEFT,
 	DIRECTION_UP,
 	DIRECTION_RIGHT,
-	DIRECTION_DOWN
+	DIRECTION_DOWN,
+	STATUS_PLAYING,
+	STATUS_WON,
+	STATUS_LOST,
+	STATUS_IDLE
 }
 from './constants'
 
 const Game2048 = (size, renderCb) => {
-	let matrix = createEmptyMatrix(size)
-	let status = 'playing'
+
+	// mini-state-store 
+	const state ={
+		s: STATUS_IDLE,
+		m: null,
+		fm: null,
+
+		// getters
+		get status(){
+			return this.s
+		},
+		get matrix(){
+			return this.m
+		},
+		get flatMatrix(){
+			return this.fm 
+		},
+
+		// state mutators 
+		set matrix(matrix){
+			const flatMatrix = matrix.flat()
+			this.m = matrix
+			this.fm = flatMatrix
+			this.status = determineStatus(flatMatrix)
+		},
+		set flatMatrix(flatMatrix){
+			this.fm = flatMatrix
+			this.matrix = arrayToMatrix(flatMatrix, size)
+			this.status = determineStatus(flatMatrix)
+		},
+		set status(status){
+			this.s = status
+		},
+	}
+	
+	const determineStatus = (flatMatrix) =>{
+		// any item = 2048?
+		if(flatMatrix.includes(2048)) return STATUS_WON
+			  
+		// any zeros left for the machine to move or gridlock?
+		if(zeroIndexes(flatMatrix) <= 2) return STATUS_LOST
+
+		// keep playing
+		return STATUS_PLAYING
+	}
 
 	// call external rendering
 	const render = () => {
-		if (renderCb) renderCb({
-			matrix,
-			status
-		})
+		if (renderCb){
+			const {matrix, status} = state
+			renderCb({
+				matrix,
+				status
+			})
+		}
 	}
 
 	// machine can add 2 or 4
 	// get two random zero item's index and update the values in the matrix with random 2 or 4 
 	const moveMachine = () => {
-		const flatMatrix = matrix.flat()
-		const indexes = zeroIndexes(flatMatrix)
-		const positions = randomArrayItems(indexes, 2) //todo replace with a simple / more performant algo?
-		positions.map((position) => {
+		const flatMatrix = state.flatMatrix
+		const zIndexes = zeroIndexes(flatMatrix)
+		const zPositions = randomArrayItems(zIndexes, 2)
+		zPositions.map((position) => {
 			flatMatrix[position] = Math.random() <= 0.5 ? 2 : 4
 		})
 
-		matrix = arrayToMatrix(flatMatrix, size)
-
-		//todo check lost? 
-
+		state.flatMatrix = flatMatrix
 		render()
 		// next move: 
 		// wait for user 
@@ -50,36 +97,26 @@ const Game2048 = (size, renderCb) => {
 	// user can move the board to 4 directions, equal numbers will be summarized
 	// rotate matrix according to the direction and summarize columns
 	const moveUser = (direction) => {
-		const rotatedMatrix = rotateMatrix(matrix, direction)
+		const rotatedMatrix = rotateMatrix(state.matrix, direction)
 		rotatedMatrix.map((col) => mergeItems(col))
-		matrix = rotateMatrix(rotatedMatrix, direction, true)
-		console.log(direction, rotatedMatrix)
 
-		// todo check won
+		const newMatrix = rotateMatrix(rotatedMatrix, direction, true) // rotate back
 
-		// render
+		state.matrix = newMatrix
 		render()
 
 		// next move:
 		moveMachine()
 	}
 
-	const isLost = () => {
-		// no more cells left to merge
-		// no more zeros left in the matrix 
-	}
-
-	const isWon = () => {
-		// at least one item === 2048 
-	}
-
-
-	// start the game and wait for the user
+	// init the matrix, machine moves
+	state.matrix = createEmptyMatrix(size)
+	state.status = STATUS_PLAYING
 	moveMachine()
 
-	// expose move to ui 
+	// expose move 
 	return {
-		moveUser
+		moveBoard: moveUser
 	}
 }
 

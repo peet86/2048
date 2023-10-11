@@ -4,12 +4,18 @@ import { ref, onMounted, watch } from 'vue'
 import Dashboard from './components/Dashboard.vue'
 import Board from './components/Board.vue'
 import StatusMessage from './components/StatusMessage.vue'
-import Game2048 from './lib/game2048'
+import Game2048, {
+  STATUS_WON,
+  STATUS_LOST,
+  STATUS_IDLE,
+  STATUS_PLAYING
+} from './lib/game2048'
+
 
 // init vue state
 const boardSize = ref(4)
 const boardMatrix = ref(null)
-const gameStatus = ref('idle')
+const gameStatus = ref(STATUS_IDLE)
 
 // game instance
 let game = null
@@ -20,7 +26,7 @@ const onBoardChange = ({ matrix, status }) => {
 }
 
 const onMove = (direction) => {
-  game.moveUser(direction)
+  game.moveBoard(direction)
 }
 
 const onStart = (boardSize) => {
@@ -35,10 +41,10 @@ const onStart = (boardSize) => {
       <small class="text-2xs mt-4 ml-2 text-white">by peet86</small>
     </div>
     <div class="grow justify-center align-middle">
-      <Board :matrix="gameStatus === 'playing' ? boardMatrix : null" @move="onMove">
-          <StatusMessage v-if="gameStatus === 'win'" class="">2048! Congrats! You are awesome.</StatusMessage>
-          <StatusMessage v-if="gameStatus === 'lost'" class="">Game Over</StatusMessage>
-          <StatusMessage v-if="gameStatus === 'idle'" class="">
+      <Board :matrix="gameStatus === STATUS_PLAYING ? boardMatrix : null" @move="onMove">
+          <StatusMessage v-if="gameStatus === STATUS_WON">2048! Congrats! You are awesome.</StatusMessage>
+          <StatusMessage v-if="gameStatus === STATUS_LOST">Game Over</StatusMessage>
+          <StatusMessage v-if="gameStatus === STATUS_IDLE">
             <h1 class="text-xl mb-2">Manual</h1>
             <p>Slide and combine like-numbered tiles on the board to reach the 2048 tile. Aim to keep the highest tile in
               a
