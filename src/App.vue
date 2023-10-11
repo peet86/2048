@@ -42,11 +42,11 @@ const onStart = (size, level) => {
       <h1 class="text-3xl text-white text-shadow-lg relative font-mono">
         Game2048
       </h1>
-      <small class="text-2xs mt-4 ml-2 text-white">by peet86</small>
+      <a href="https://github.com/peet86/2048" class="text-2xs mt-4 ml-2 text-white">by peet86</a>
     </div>
     <div class="grow justify-center align-middle">
       <Board
-        :matrix="gameStatus === STATUS_PLAYING ? boardMatrix : null"
+        :matrix="gameStatus === STATUS_PLAYING ? boardMatrix : []"
         @move="onMove"
       >
         <StatusMessage
