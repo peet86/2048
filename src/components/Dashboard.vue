@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 
+const emit = defineEmits(['start'])
+
 const props = defineProps({
 	defaultSize: Number,
 })
@@ -15,11 +17,11 @@ const BOARD_SIZES = [4, 6, 8, 12]
 		Use the keyboard ←↑↓→ or swipe to play.
 	</div>
 	<div class="p-2 text-white text-center p-2">
-		▩&nbsp;{{ boardSize }}&nbsp;x
-		<select v-model="boardSize" class="bg-transparent">
+		<span class="text-xl">▩</span>&nbsp;{{ boardSize }}&nbsp;x
+		<select v-model="boardSize" class="bg-transparent" name="size">
 			<option v-for="size in BOARD_SIZES">{{ size }}</option>
 		</select>
-		<button @click="$emit('start', parseInt(boardSize))" class="border-white rounded-md px-2 border ml-2">
+		<button @click="emit('start', parseInt(boardSize))" class="border-white rounded-md px-2 border ml-2">
 			↺ restart
 		</button>
 	</div>

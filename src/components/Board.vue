@@ -2,11 +2,14 @@
 import { ref, onMounted } from 'vue'
 import { DIRECTION_DOWN, DIRECTION_UP, DIRECTION_LEFT, DIRECTION_RIGHT } from '../lib/game2048'
 
-defineProps({
+const props = defineProps({
   matrix: Array,
 })
 
 const emit = defineEmits(['move'])
+
+const ANIM_TTL = 300
+const animation = ref('')
 
 onMounted(() => {
   document.addEventListener('keyup', onKeyUp)
@@ -24,17 +27,40 @@ const SWIPE_MAP = {
   'left': DIRECTION_LEFT,
   'right': DIRECTION_RIGHT,
   'top': DIRECTION_UP,
-  'down': DIRECTION_DOWN
+  'bottom': DIRECTION_DOWN
+}
+
+const ANIM_MAP = {
+  [DIRECTION_LEFT]: '-translate-x-3',
+  [DIRECTION_RIGHT]: 'translate-x-3',
+  [DIRECTION_UP]: '-translate-y-3',
+  [DIRECTION_DOWN]: 'translate-y-3'
 }
 
 const onKeyUp = (e) => {
+  if(!props.matrix) return
   const direction = KEY_MAP[e.keyCode]
-  if (direction) emit('move', direction)
+  if (direction) {
+    animateBoard(direction)
+    emit('move', direction)
+  }
 }
 
 const onSwipe = (d) => {
+  if(!props.matrix) return
   const direction = SWIPE_MAP[d]
-  if (direction) emit('move', direction)
+  if (direction) {
+    animateBoard(direction)
+    emit('move', direction)
+  }
+}
+
+const animateBoard = (direction) => {
+  console.log(ANIM_MAP[direction])
+  animation.value = ANIM_MAP[direction]
+  setTimeout(() => {
+    animation.value = ''
+  }, ANIM_TTL)
 }
 
 const getTextSize = (value) => {
@@ -58,12 +84,19 @@ const getTextColor = (value) => {
 </script>
 
 <template>
-  <div class="w-full" v-touch:swipe="onSwipe" style="">
-    <div class="pointer-events-none flex" v-for="col in matrix">
-      <div class="pointer-events-none border h-full shadow-inner grow m-1 aspect-square rounded-xl justify-center align-middle relative"
-        :class="getTextSize(value)" v-for="value in col">
-        <div :class="getTextColor(value)" class="select-none font-bold pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ value ? value :
-          '&nbsp;' }}</div>
+  <div
+    class="mx-4 md:mx-auto md:max-w-[480px] p-4 bg-white border-yellow-900 rounded-2xl aspect-square transition ease-in-out duration-200"
+    :class="animation">
+    <slot></slot>
+    <div v-if="matrix" class="relative w-full">
+      <div class="absolute top-0 left-0 right-0 bottom-0 z-10" v-touch:swipe="onSwipe"></div>
+      <div class="flex" v-for="col in matrix">
+        <div class="border h-full shadow-inner grow m-1 aspect-square rounded-xl justify-center align-middle relative"
+          :class="getTextSize(value)" v-for="value in col">
+          <div :class="getTextColor(value)"
+            class="select-none font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ value ? value :
+              '&nbsp;' }}</div>
+        </div>
       </div>
     </div>
   </div>

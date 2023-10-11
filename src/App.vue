@@ -31,23 +31,24 @@ const onStart = (boardSize) => {
 <template>
   <div class="flex flex-col">
     <div class="p-4 justify-center flex">
-      <h1 class="text-2xl text-white text-shadow-lg relative font-mono">2048 </h1>
+      <h1 class="text-3xl text-white text-shadow-lg relative font-mono">2048 </h1>
       <small class="text-2xs mt-4 ml-2 text-white">by peet86</small>
     </div>
     <div class="grow justify-center align-middle">
-      <div class="mx-4 md:mx-auto md:max-w-[480px] p-4 bg-white border-yellow-900 rounded-2xl aspect-square">
-        <StatusMessage v-if="gameStatus === 'win'" class="">2048! Congrats! You are awesome.</StatusMessage>
-        <StatusMessage v-if="gameStatus === 'lost'" class="">Game Over</StatusMessage>
-        <StatusMessage v-if="gameStatus === 'idle'" class="">
-          <h1 class="text-xl mb-2">Manual</h1>
-          <p>Slide and combine like-numbered tiles on the board to reach the 2048 tile. Aim to keep the highest tile in a
-            corner to optimize combinations and avoid gridlock.</p>
-          <button @click="onStart(boardSize)" class="border border-yellow-600 text-yellow-900 rounded-md px-4 py-2 border my-2">
-            New Game
-          </button>
-        </StatusMessage>
-        <Board v-else :matrix="boardMatrix" @move="onMove" />
-      </div>
+      <Board :matrix="gameStatus === 'playing' ? boardMatrix : null" @move="onMove">
+          <StatusMessage v-if="gameStatus === 'win'" class="">2048! Congrats! You are awesome.</StatusMessage>
+          <StatusMessage v-if="gameStatus === 'lost'" class="">Game Over</StatusMessage>
+          <StatusMessage v-if="gameStatus === 'idle'" class="">
+            <h1 class="text-xl mb-2">Manual</h1>
+            <p>Slide and combine like-numbered tiles on the board to reach the 2048 tile. Aim to keep the highest tile in
+              a
+              corner to optimize combinations and avoid gridlock.</p>
+            <button @click="onStart(boardSize)"
+              class="relative border border-yellow-600 text-yellow-900 rounded-md px-4 py-2 border my-4">
+              New Game
+            </button>
+          </StatusMessage>
+      </Board>
     </div>
     <Dashboard @start="onStart" :defaultSize="boardSize"></Dashboard>
   </div>
