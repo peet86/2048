@@ -54,7 +54,7 @@ const onStart = (size, level) => {
             a
             corner to optimize combinations and avoid gridlock.</p>
           <button @click="onStart(defaultSize, defaultLevel)"
-            class="relative border border-yellow-600 text-yellow-900 rounded-md px-4 py-2 border my-4">
+            class="relative border border-yellow-600 text-yellow-900 rounded-md px-4 py-2 my-4">
             New Game
           </button>
         </StatusMessage>

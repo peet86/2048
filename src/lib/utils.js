@@ -9,7 +9,7 @@ export const zeroIndexes = (array) => array.reduce((result, value, index) => {
 	return result
 }, [])
 
-export const randomArrayItems = (array, n) => array.sort(() => .5 - Math.random()).slice(0, n)
+export const randomSample = (array, n) => array.sort(() => .5 - Math.random()).slice(0, n)
 
 export const rotateMatrixCW = (matrix) => matrix[0].map((val, index) => matrix.map(row => row[index]).reverse())
 
