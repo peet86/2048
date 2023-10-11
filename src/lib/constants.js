@@ -7,3 +7,6 @@ export const STATUS_IDLE = 'idle'
 export const STATUS_PLAYING = 'playing'
 export const STATUS_WON = 'won'
 export const STATUS_LOST = 'lost'
+
+export const LEVEL_PRO = 2
+export const LEVEL_ROOKIE = 1

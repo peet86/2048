@@ -38,7 +38,7 @@ const ANIM_MAP = {
 }
 
 const onKeyUp = (e) => {
-  if(!props.matrix) return
+  if (!props.matrix) return
   const direction = KEY_MAP[e.keyCode]
   if (direction) {
     animateBoard(direction)
@@ -47,7 +47,7 @@ const onKeyUp = (e) => {
 }
 
 const onSwipe = (d) => {
-  if(!props.matrix) return
+  if (!props.matrix) return
   const direction = SWIPE_MAP[d]
   if (direction) {
     animateBoard(direction)

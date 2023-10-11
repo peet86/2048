@@ -1,11 +1,15 @@
 import {
 	expect,
 	test,
-	describe
+	describe,
+	vi
 } from 'vitest'
 
 import {
 	mergeItems,
+	generateValue,
+	LEVEL_ROOKIE,
+	LEVEL_PRO
 } from './game2048'
 
 describe('game2048', () => {
@@ -30,6 +34,24 @@ describe('game2048', () => {
 
 		test('should ignore 0s and merge to left', () => {
 			expect(mergeItems([2, 0, 2])).toStrictEqual([4, 0, 0])
+		})
+
+	})
+
+	describe('generateValue', () => {
+
+		test('should generate 2 on rookie level', () => {
+			expect(generateValue(LEVEL_ROOKIE)).toBe(2)
+		})
+
+		test('should generate 2 on pro level when random is < 0.7', () => {
+			vi.spyOn(global.Math, 'random').mockImplementation(()=>0.5)
+			expect(generateValue(LEVEL_PRO)).toBe(2)
+		})
+
+		test('should generate 4 on pro level when random is > 0.7', () => {
+			vi.spyOn(global.Math, 'random').mockImplementation(()=>0.9)
+			expect(generateValue(LEVEL_PRO)).toBe(4)
 		})
 
 	})

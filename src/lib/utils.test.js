@@ -114,7 +114,7 @@ describe('utils', () => {
 	describe('randomArrayItems', () => {
 
 		test('should return 1 random number', () => {
-			expect(randomArrayItems([1, 2])).toHaveLength(1)
+			expect(randomArrayItems([1, 2],1)).toHaveLength(1)
 		})
 
 		test('should return 2 random numbers when sample is 2', () => {

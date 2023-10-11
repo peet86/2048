@@ -8,12 +8,14 @@ import Game2048, {
   STATUS_WON,
   STATUS_LOST,
   STATUS_IDLE,
-  STATUS_PLAYING
+  STATUS_PLAYING,
+  LEVEL_ROOKIE
 } from './lib/game2048'
 
 
-// init vue state
-const boardSize = ref(4)
+const defaultSize = ref(4)
+const defaultLevel = ref(LEVEL_ROOKIE)
+
 const boardMatrix = ref(null)
 const gameStatus = ref(STATUS_IDLE)
 
@@ -29,8 +31,8 @@ const onMove = (direction) => {
   game.moveBoard(direction)
 }
 
-const onStart = (boardSize) => {
-  game = Game2048(boardSize, onBoardChange)
+const onStart = (size, level) => {
+  game = Game2048(size, level, onBoardChange)
 }
 </script>
 
@@ -49,14 +51,14 @@ const onStart = (boardSize) => {
             <p>Slide and combine like-numbered tiles on the board to reach the 2048 tile. Aim to keep the highest tile in
               a
               corner to optimize combinations and avoid gridlock.</p>
-            <button @click="onStart(boardSize)"
+            <button @click="onStart(defaultSize, defaultLevel)"
               class="relative border border-yellow-600 text-yellow-900 rounded-md px-4 py-2 border my-4">
               New Game
             </button>
           </StatusMessage>
       </Board>
     </div>
-    <Dashboard @start="onStart" :defaultSize="boardSize"></Dashboard>
+    <Dashboard @start="onStart" :defaultSize="defaultSize" :defaultLevel="defaultLevel"></Dashboard>
   </div>
 </template>
 

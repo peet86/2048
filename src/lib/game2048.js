@@ -16,52 +16,53 @@ import {
 	STATUS_PLAYING,
 	STATUS_WON,
 	STATUS_LOST,
-	STATUS_IDLE
+	STATUS_IDLE,
+	LEVEL_PRO
 }
 from './constants'
 
-const Game2048 = (size, renderCb) => {
+const Game2048 = (size, level, renderCb) => {
 
 	// mini-state-store 
-	const state ={
+	const state = {
 		s: STATUS_IDLE,
 		m: null,
 		fm: null,
 
 		// getters
-		get status(){
+		get status() {
 			return this.s
 		},
-		get matrix(){
+		get matrix() {
 			return this.m
 		},
-		get flatMatrix(){
-			return this.fm 
+		get flatMatrix() {
+			return this.fm
 		},
 
 		// state mutators 
-		set matrix(matrix){
+		set matrix(matrix) {
 			const flatMatrix = matrix.flat()
 			this.m = matrix
 			this.fm = flatMatrix
 			this.status = determineStatus(flatMatrix)
 		},
-		set flatMatrix(flatMatrix){
+		set flatMatrix(flatMatrix) {
 			this.fm = flatMatrix
 			this.matrix = arrayToMatrix(flatMatrix, size)
 			this.status = determineStatus(flatMatrix)
 		},
-		set status(status){
+		set status(status) {
 			this.s = status
 		},
 	}
-	
-	const determineStatus = (flatMatrix) =>{
+
+	const determineStatus = (flatMatrix) => {
 		// any item = 2048?
-		if(flatMatrix.includes(2048)) return STATUS_WON
-			  
+		if (flatMatrix.includes(2048)) return STATUS_WON
+
 		// any zeros left for the machine to move or gridlock?
-		if(zeroIndexes(flatMatrix) <= 2) return STATUS_LOST
+		if (zeroIndexes(flatMatrix) <= 2) return STATUS_LOST
 
 		// keep playing
 		return STATUS_PLAYING
@@ -69,8 +70,11 @@ const Game2048 = (size, renderCb) => {
 
 	// call external rendering
 	const render = () => {
-		if (renderCb){
-			const {matrix, status} = state
+		if (renderCb) {
+			const {
+				matrix,
+				status
+			} = state
 			renderCb({
 				matrix,
 				status
@@ -78,14 +82,13 @@ const Game2048 = (size, renderCb) => {
 		}
 	}
 
-	// machine can add 2 or 4
-	// get two random zero item's index and update the values in the matrix with random 2 or 4 
+	// get two random zero item's index and update the values in the matrix with 2
 	const moveMachine = () => {
 		const flatMatrix = state.flatMatrix
 		const zIndexes = zeroIndexes(flatMatrix)
-		const zPositions = randomArrayItems(zIndexes, 2)
+		const zPositions = randomArrayItems(zIndexes, level === LEVEL_PRO ? 2 : 1)
 		zPositions.map((position) => {
-			flatMatrix[position] = Math.random() <= 0.5 ? 2 : 4
+			flatMatrix[position] = generateValue(level)
 		})
 
 		state.flatMatrix = flatMatrix
@@ -147,6 +150,13 @@ export const mergeItems = (array) => {
 		index += !!array[index];
 	}
 	return array;
+}
+
+export const generateValue = (level) => {
+	if (level === LEVEL_PRO) {
+		return Math.random() <= .7 ? 2 : 4 // pros will get 2 or 4 70/30%
+	}
+	return 2 // normies
 }
 
 export * from './constants'; // re-export constants

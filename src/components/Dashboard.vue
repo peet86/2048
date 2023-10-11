@@ -1,15 +1,23 @@
 <script setup>
 import { ref } from 'vue'
+import { LEVEL_PRO, LEVEL_ROOKIE } from '../lib/constants';
 
 const emit = defineEmits(['start'])
 
 const props = defineProps({
 	defaultSize: Number,
+	defaultLevel: Number,
 })
 
-const boardSize = ref(props.defaultSize)
+const size = ref(props.defaultSize)
+const level = ref(props.defaultLevel)
 
-const BOARD_SIZES = [4, 6, 8, 12]
+
+const SIZES = [4, 6, 8, 12]
+const LEVELS = [
+	{ value: LEVEL_PRO, label: 'Pro' },
+	{ value: LEVEL_ROOKIE, label: 'Rookie' }
+]
 </script>
 
 <template>
@@ -17,12 +25,17 @@ const BOARD_SIZES = [4, 6, 8, 12]
 		Use the keyboard ←↑↓→ or swipe to play.
 	</div>
 	<div class="p-2 text-white text-center p-2">
-		<span class="text-xl">▩</span>&nbsp;{{ boardSize }}&nbsp;x
-		<select v-model="boardSize" class="bg-transparent" name="size">
-			<option v-for="size in BOARD_SIZES">{{ size }}</option>
+		New game:
+		<span class="text-xl mx-2">▩</span>
+		<select v-model="size" class="bg-transparent" name="size">
+			<option v-for="s in SIZES" :value="s">{{ s }} x {{ s }}</option>
 		</select>
-		<button @click="emit('start', parseInt(boardSize))" class="border-white rounded-md px-2 border ml-2">
-			↺ restart
+		<span class="text-xl mx-2">♛</span>
+		<select v-model="level" class="bg-transparent" name="level">
+			<option v-for="l in LEVELS" :value="l.value">{{ l.label }}</option>
+		</select>
+		<button @click="emit('start', parseInt(size), parseInt(level))" class="border-white rounded-md px-2 border ml-2">
+			↺ Start
 		</button>
 	</div>
 </template>
