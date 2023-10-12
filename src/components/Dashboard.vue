@@ -5,12 +5,12 @@ import { LEVEL_PRO, LEVEL_ROOKIE } from '../lib/index';
 const emit = defineEmits(['start'])
 
 const props = defineProps({
-  defaultSize: {type: Number,required: true },
-  defaultLevel: {type: Number,required: true }
+  gameSize: {type: Number,required: true },
+  gameLevel: {type: Number,required: true }
 })
 
-const size = ref(props.defaultSize)
-const level = ref(props.defaultLevel)
+const size = ref(props.gameSize)
+const level = ref(props.gameLevel)
 
 
 const SIZES = [4, 6, 8, 12]
