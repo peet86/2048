@@ -37,7 +37,6 @@ const onMove = (direction) => {
 const onStart = (size, level) => {
   gameSize.value = size
   gameLevel.value = level
-  console.log(size,level)
   game = Game2048(size, level, onBoardChange)
 }
 </script>

@@ -74,7 +74,7 @@ const Game2048 = (size, level, renderCb) => {
   const moveMachine = () => {
     const matrix = state.flatMatrix
 
-    const randomPositions = getRandomZeroPositions(matrix)
+    const randomPositions = getRandomZeroPositions(matrix, level)
     randomPositions.map((position) => {
       matrix[position] = generateValue(level)
     })
