@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { LEVEL_PRO, LEVEL_ROOKIE } from '../lib/constants';
+import { LEVEL_PRO, LEVEL_ROOKIE } from '../lib/index';
 
 const emit = defineEmits(['start'])
 

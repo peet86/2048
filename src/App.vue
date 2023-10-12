@@ -10,7 +10,7 @@ import Game2048, {
   STATUS_IDLE,
   STATUS_PLAYING,
   LEVEL_ROOKIE
-} from './lib/game2048'
+} from './lib/index'
 
 
 const defaultSize = ref(4)

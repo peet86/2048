@@ -8,11 +8,14 @@ import {
 import {
   mergeItems,
   generateValue,
+} from './helpers'
+
+import {
   LEVEL_ROOKIE,
   LEVEL_PRO
-} from './game2048'
+} from './constants'
 
-describe('game2048', () => {
+describe('helpers', () => {
 
   describe('mergeItems', () => {
 
